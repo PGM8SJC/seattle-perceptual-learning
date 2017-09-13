@@ -44,3 +44,35 @@ result = create_composition(a, b,
 
 plt.imshow(result)
 
+def create_new_dataset(dataset, offsets=[[0,0]]):
+    
+    m, n = dataset.shape
+    im_x = int(np.sqrt(n))
+    num_offsets = len(offsets)
+    
+    new_dataset = np.zeros((m,n*4))
+    
+    for i in range(m):
+        image = np.reshape(X_train[i,:], (im_x,im_x))
+        noise_bg = scale_2D(create_2D_noise())
+        
+        rand_offset = np.random.randint(0,num_offsets)
+
+        result = create_composition(image, noise_bg,
+                       x_offset=offsets[rand_offset,0],
+                       y_offset=offsets[rand_offset,1],
+                       center=None, radius=None)
+        
+        new_dataset[i,:] = np.ndarray.flatten(result)
+        
+    return new_dataset
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
