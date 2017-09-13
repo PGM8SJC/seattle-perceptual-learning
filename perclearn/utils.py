@@ -2,8 +2,6 @@ import numpy as np
 from numpy.matlib import repmat
 
 
-from numpy.matlib import repmat
-
 def create_2D_noise(dim_array=(56,56), beta=-1):
     """
     Function translated by Asier Erramuzpe (@erramuzpe)
