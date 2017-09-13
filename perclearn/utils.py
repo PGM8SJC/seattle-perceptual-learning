@@ -77,5 +77,6 @@ def create_2D_noise(dim_array=(56,56), beta=-1):
 def scale_2D(data, scale_range=(0, 255)):
     
     scaler = MinMaxScaler(feature_range=scale_range)
+    scaler.fit(data)
     return scaler.transform(data)
 
