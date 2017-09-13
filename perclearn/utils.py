@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.matlib import repmat
-
+from sklearn.preprocessing import MinMaxScaler
 
 def create_2D_noise(dim_array=(56,56), beta=-1):
     """
@@ -72,3 +72,10 @@ def create_2D_noise(dim_array=(56,56), beta=-1):
 
     # Pick just the real component
     return np.real(x)
+
+
+def scale_2D(data, scale_range=(0, 255)):
+    
+    scaler = MinMaxScaler(feature_range=scale_range)
+    return scaler.transform(data)
+

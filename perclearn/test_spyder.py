@@ -34,9 +34,7 @@ plt.imshow(create_2D_noise())
 
 
 a = np.reshape(X_train[0,:], (28,28))
-image = create_2D_noise()
-image *= (255.0/image.max())
-image = image/(image.max()/255.0)
+b = scale_2D(create_2D_noise())
 
 
 plt.imshow(a)
