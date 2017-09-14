@@ -54,3 +54,13 @@ result = create_composition(image, noise_bg,
                y_offset=offsets[rand_offset][1],
                center=None, radius=None)
 plt.imshow(result)    
+
+
+
+plt.imshow(image)    
+
+
+       
+        
+
+
