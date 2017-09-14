@@ -75,6 +75,9 @@ def create_2D_noise(dim_array=(56,56), beta=-1):
 
 
 def scale_2D(data, scale_range=(0, 255)):
+    """
+    Scales a 2D np.array between a given range. 0-255 by default
+    """
     
     scaler = MinMaxScaler(feature_range=scale_range)
     scaler.fit(data)
@@ -84,13 +87,19 @@ def scale_2D(data, scale_range=(0, 255)):
 def create_composition(input_image, background_image,
                        x_offset=0, y_offset=0,
                        center=None, radius=None):
+    """
+    Given an input image and a background image, composes a new frame.
+    The input image will be positioned taking into account the offsets.
+    The input image will be circularly masked to fade the borders in a gradient
+    with the background image, avoiding high contrast borders between the input
+    image and the background image.     
+    """
 
     w, h = input_image.shape
     
     # center and radius calculation for input_image
     if center is None:
         center = [int(w/2), int(h/2)]
-        
     if radius is None:
         radius = min(center[0], center[1], w-center[0], h-center[1])
 
@@ -98,8 +107,7 @@ def create_composition(input_image, background_image,
     dist_from_center = np.sqrt((X - center[0])**2 + (Y-center[1])**2)
 
     mask = dist_from_center <= radius
-    
-    
+
     circle_image = np.ma.array(input_image,
                                mask = ~mask)
 
