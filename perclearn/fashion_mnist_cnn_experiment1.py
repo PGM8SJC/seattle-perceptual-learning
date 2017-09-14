@@ -18,6 +18,9 @@ import numpy as np
 import os
 from os.path import join as opj
 
+from perclearn import mnist_reader
+
+
 cwd = os.getcwd()
 
 batch_size = 128
@@ -28,7 +31,10 @@ epochs = 12
 img_rows, img_cols = 56, 56
 
 # the data, shuffled and split between train and test sets
-(x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+X_train, y_train = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+                                           kind='train')
+X_test, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+                                         kind='t10k')
 
 x_train = np.load(opj(cwd, 'perclearn/data/experiments/1/training.npz'))
 x_train = x_train['arr_0']
