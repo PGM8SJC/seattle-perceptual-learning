@@ -132,7 +132,14 @@ def create_composition(input_image, background_image,
     return background_image
 
 
-def create_new_dataset(dataset, offsets=[[0,0]]):
+def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None):
+    """
+    Creates dataset for training/testing different configurations.
+    It will locate images (m,n) in 2*m length/width frame in the given offsets
+    and rotated if rotate argument is true.
+    The degree argument is to select the rotation degree. Given by None for random
+    selection and degree*90º if int. 
+    """
     
     m, n = dataset.shape
     im_x = int(np.sqrt(n))
@@ -142,6 +149,8 @@ def create_new_dataset(dataset, offsets=[[0,0]]):
     
     for i in range(m):
         image = np.reshape(dataset[i,:], (im_x,im_x))
+        if rotate is not False:
+            image = rotate_image(image, rot=degree)
         noise_bg = scale_2D(create_2D_noise())
         
         rand_offset = np.random.randint(0,num_offsets)
