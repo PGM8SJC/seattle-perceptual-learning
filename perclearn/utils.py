@@ -146,4 +146,14 @@ def create_new_dataset(dataset, offsets=[[0,0]]):
         new_dataset[i,:] = np.ndarray.flatten(result)
         
     return new_dataset
+
+
+def rotate_image(image, rot=None):
+    """
+    Function to rotate given image to left side by 90*rot degrees
+    """
     
+    if rot is None:
+        rot = np.random.randint(0,4)
+
+    return np.rot90(image, k=rot)
