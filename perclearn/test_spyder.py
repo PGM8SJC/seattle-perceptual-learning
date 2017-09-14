@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from perclearn import mnist_reader
 from perclearn.utils import (create_2D_noise,
                              scale_2D,
-                             create_composition,
+                             create_new_dataset,
                              )
 
 
@@ -20,16 +20,10 @@ X_train, y_train = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
 X_test, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
                                          kind='t10k')
 
-print(X_train.shape)
+X_train = create_new_dataset(X_train, [[0,0]])        
+np.savez(opj(cwd, 'perclearn/data/experiments/1/training'),X_train)
 
-plt.imshow(np.reshape(X_train[0,:], (28,28)), cmap=plt.cm.Greys)
-print(y_train[0])
-
-
-X_test = create_new_dataset(X_test, [[0,28],[28,0],[28,28]])    
-
-plt.imshow(result)    
-    
+X_test = create_new_dataset(X_test, [[0,28],[28,0],[28,28]])        
 np.savez(opj(cwd, 'perclearn/data/experiments/1/testing'),X_test)
     
 
