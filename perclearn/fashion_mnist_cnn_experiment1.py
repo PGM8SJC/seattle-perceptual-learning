@@ -30,9 +30,9 @@ epochs = 12
 img_rows, img_cols = 56, 56
 
 # the data, shuffled and split between train and test sets
-X_train, y_train = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+_, y_train = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
                                            kind='train')
-X_test, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+_, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
                                          kind='t10k')
 
 x_train = np.load(opj(cwd, 'perclearn/data/experiments/1/training.npz'))

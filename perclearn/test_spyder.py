@@ -52,7 +52,7 @@ plt.imshow(result)
 
 
 plt.imshow(image)    
-
+plt.imshow(np.reshape(x_train[i,:], (56,56)))
 
        
         
