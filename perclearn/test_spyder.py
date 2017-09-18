@@ -100,6 +100,7 @@ Create new dataset
 """
 import os
 from os.path import join as opj
+import numpy as np
 
 from perclearn import mnist_reader
 from perclearn.utils import (create_new_dataset)
