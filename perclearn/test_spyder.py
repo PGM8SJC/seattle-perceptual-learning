@@ -79,7 +79,7 @@ new_dataset = np.zeros((m,n*4))
 image = np.reshape(dataset[i,:], (im_x,im_x))
 noise_bg = scale_2D(create_2D_noise())
 
-for i in range(2,15,2):
+for i in range(0,15,2):
     result = create_composition(image, noise_bg,
                    x_offset=0,
                    y_offset=0,

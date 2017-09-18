@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.matlib import repmat
-from sklearn.preprocessing import MinMaxScaler
+from skimage.transform import rotate
 
 def create_2D_noise(dim_array=(56,56), beta=-1):
     """
@@ -90,7 +90,7 @@ def scale_2D(data, scale_range=(0, 255)):
 
 def create_composition(input_image, background_image,
                        x_offset=0, y_offset=0,
-                       center=None, radius=None):
+                       center=None, radius=0):
     """
     Given an input image and a background image, composes a new frame.
     The input image will be positioned taking into account the offsets.
@@ -149,15 +149,15 @@ def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None):
     im_x = int(np.sqrt(n))
     num_offsets = len(offsets)
     
-    new_dataset = np.zeros((m,n*4))
+    new_dataset = np.zeros((m, n*4))
     
     for i in range(m):
-        image = np.reshape(dataset[i,:], (im_x,im_x))
+        image = np.reshape(dataset[i,:], (im_x, im_x))
         if rotate is not False:
             image = rotate_image(image, rot=degree)
         noise_bg = scale_2D(create_2D_noise())
         
-        rand_offset = np.random.randint(0,num_offsets)
+        rand_offset = np.random.randint(0, num_offsets)
 
         result = create_composition(image, noise_bg,
                        x_offset=offsets[rand_offset][0],
@@ -169,12 +169,12 @@ def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None):
     return new_dataset
 
 
-def rotate_image(image, rot=None):
+def rotate_image(image, angle=None):
     """
-    Function to rotate given image to left side by 90*rot degrees
+    Function to rotate given image to left side by angle degrees
     """
     
-    if rot is None:
-        rot = np.random.randint(0,4)
+    if angle is None:
+        angle = np.random.randint(0, 360)
 
-    return np.rot90(image, k=rot)
+    return rotate(image, angle=angle)
