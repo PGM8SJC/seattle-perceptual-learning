@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.matlib import repmat
 from skimage.transform import rotate
+import pandas as pd
 
 def create_2D_noise(dim_array=(56,56), beta=-1):
     """
@@ -137,13 +138,13 @@ def create_composition(input_image, background_image,
     return background_image
 
 
-def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None, 
+def create_new_dataset(dataset, offsets=[[0,0]], rotate_bool=False, angle=None, 
                        center=None, radius=0):
     """
     Creates dataset for training/testing different configurations.
     It will locate images (m,n) in 2*m length/width frame in the given offsets
     and rotated if rotate argument is true.
-    The degree argument is to select the rotation degree. Given by None for random
+    The degree argument is to select the rotation angle. Given by None for random
     selection and degree*90º if int. 
     """
     
@@ -152,22 +153,31 @@ def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None,
     num_offsets = len(offsets)
     
     new_dataset = np.zeros((m, n*4))
+    columns = ['Offset', 'Center_(noise)',
+               'Radius_(noise)', 'Angle_(rotation)']
+    dataset_info = pd.DataFrame(columns=columns)
+
     
     for i in range(m):
         image = np.reshape(dataset[i,:], (im_x, im_x))
-        if rotate is not False:
-            image = rotate_image(image, rot=degree)
+        if rotate_bool is not False:
+            image, angle_info = rotate_image(image, angle=angle)
+        else:
+            angle_info = angle
         noise_bg = scale_2D(create_2D_noise())
         
         rand_offset = np.random.randint(0, num_offsets)
 
-        result = create_composition(image, noise_bg,
+        result  = create_composition(image, noise_bg,
                        x_offset=offsets[rand_offset][0],
-                       y_offset=offsets[rand_offset][1])
+                       y_offset=offsets[rand_offset][1],
+                       center=center, radius=radius)
         
         new_dataset[i,:] = np.ndarray.flatten(result)
         
-    return new_dataset
+        dataset_info.loc[i] = [rand_offset, center, radius, angle_info]
+        
+    return new_dataset, dataset_info
 
 
 def rotate_image(image, angle=None):
@@ -178,4 +188,4 @@ def rotate_image(image, angle=None):
     if angle is None:
         angle = np.random.randint(0, 360)
 
-    return rotate(image, angle=angle)
+    return rotate(image, angle=angle, preserve_range=True), angle
