@@ -136,7 +136,8 @@ def create_composition(input_image, background_image,
     return background_image
 
 
-def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None):
+def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None, 
+                       center=None, radius=0):
     """
     Creates dataset for training/testing different configurations.
     It will locate images (m,n) in 2*m length/width frame in the given offsets
@@ -161,8 +162,7 @@ def create_new_dataset(dataset, offsets=[[0,0]], rotate=False, degree=None):
 
         result = create_composition(image, noise_bg,
                        x_offset=offsets[rand_offset][0],
-                       y_offset=offsets[rand_offset][1],
-                       center=None, radius=None)
+                       y_offset=offsets[rand_offset][1])
         
         new_dataset[i,:] = np.ndarray.flatten(result)
         
