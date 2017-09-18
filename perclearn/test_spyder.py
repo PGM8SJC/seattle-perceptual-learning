@@ -52,17 +52,48 @@ plt.imshow(result)
 """
 Testing week 2
 """
-#let's generate some examples of radial noise
+import os
+from os.path import join as opj
+import numpy as np
+import matplotlib.pyplot as plt
 
+from perclearn import mnist_reader
+from perclearn.utils import (create_2D_noise,
+                             scale_2D,
+                             create_composition,
+                             )
+cwd = os.getcwd()
 
+X_train, y_train = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+                                           kind='train')
+X_test, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+                                         kind='t10k')
  
+#let's generate some examples of radial noise
+dataset = X_test
+i = 10
+offsets=[[0,0]]
+m, n = dataset.shape
+im_x = int(np.sqrt(n))
+new_dataset = np.zeros((m,n*4))
+image = np.reshape(dataset[i,:], (im_x,im_x))
+noise_bg = scale_2D(create_2D_noise())
+
+for i in range(2,15,2):
+    result = create_composition(image, noise_bg,
+                   x_offset=0,
+                   y_offset=0,
+                   center=None, radius=i)
+    plt.figure()
+    plt.imshow(result)
 
 
-
-plt.imshow(image)    
-plt.imshow(np.reshape(x_train[i,:], (56,56)))
-
-       
+result = create_composition(image, noise_bg,
+                           x_offset=0,
+                           y_offset=0,
+                           center=None, radius=None)
+plt.figure()
+plt.imshow(result)    
         
 
 
