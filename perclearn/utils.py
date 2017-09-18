@@ -132,7 +132,8 @@ def create_composition(input_image, background_image,
     new_input_image = background_fade + circle_image
     
     background_image[y_offset:y_offset+w, x_offset:x_offset+h] = new_input_image
-
+    background_image[center[0], center[1]] = input_image[center[0], center[1]]
+    
     return background_image
 
 
