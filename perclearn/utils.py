@@ -78,10 +78,14 @@ def scale_2D(data, scale_range=(0, 255)):
     """
     Scales a 2D np.array between a given range. 0-255 by default
     """
+    w, h = data.shape
+    data = np.ndarray.flatten(data)
     
-    scaler = MinMaxScaler(feature_range=scale_range)
-    scaler.fit(data)
-    return scaler.transform(data)
+    data += -(np.min(data))
+    data /= np.max(data) / (scale_range[1] - scale_range[0])
+    data += scale_range[0]
+
+    return np.reshape(data, (w, h))
 
 
 def create_composition(input_image, background_image,

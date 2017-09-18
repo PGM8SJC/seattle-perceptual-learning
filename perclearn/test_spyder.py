@@ -47,7 +47,15 @@ result = create_composition(image, noise_bg,
                x_offset=offsets[rand_offset][0],
                y_offset=offsets[rand_offset][1],
                center=None, radius=None)
-plt.imshow(result)    
+plt.imshow(result)   
+
+"""
+Testing week 2
+"""
+#let's generate some examples of radial noise
+
+
+ 
 
 
 
