@@ -19,7 +19,7 @@ import numpy as np
 import os
 from os.path import join as opj
 
-from perclearn import mnist_reader, 
+from perclearn import mnist_reader
 from __future__ import print_function
 import keras
 from keras.models import Sequential
