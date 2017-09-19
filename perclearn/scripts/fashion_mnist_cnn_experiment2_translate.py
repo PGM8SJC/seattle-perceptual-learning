@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-'''Trains a simple convnet on the Fashion MNIST dataset modified:
+'''
+Trains a simple convnet on the Fashion MNIST dataset modified:
     
-    - Experiment 1: Training with the image in upper left cuadrant 
-    and testing randomly distributed among other cuadrants.
+    - Experiment 2: Training with the image in upper left cuadrant 
+    and testing moving test sets 1 pixel to the right each time
+    or rotation 10º.
 
 Gets to % test accuracy after 12 epochs
 '''
@@ -126,7 +127,7 @@ for offset_x in range(56):
     print('Test loss:', score[0])
     print('Test accuracy:', score[1])
         
-np.savez(opj(cwd, 'perclearn/data/experiments/translate'), score)  
+np.savez(opj(cwd, 'perclearn/data/results/translate'), score)  
 
 """
 ROTATION
@@ -152,4 +153,4 @@ for i, angle in enumerate(range(0,360,10)):
     print('Test loss:', score[0])
     print('Test accuracy:', score[1])
         
-np.savez(opj(cwd, 'perclearn/data/experiments/rotate'), score) 
+np.savez(opj(cwd, 'perclearn/data/results/rotate'), score) 
