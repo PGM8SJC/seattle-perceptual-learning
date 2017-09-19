@@ -96,9 +96,9 @@ model.fit(x_train, y_train,
 TRANSLATION
 """
 
-score = np.empty((2,56))
+score = np.empty((2,28))
 # iterate over creation of different x_tests and evaluate model
-for offset_x in range(56):
+for offset_x in range(28):
             
     x_test, _ = create_new_dataset(x_test_full, [[offset_x,0]])        
     
@@ -113,8 +113,8 @@ for offset_x in range(56):
     print('offset x: ', offset_x)    
     
     score[:,offset_x] = np.array(model.evaluate(x_test, y_test, verbose=0))
-    print('Test loss:', score[0])
-    print('Test accuracy:', score[1])
+    print('Test loss:', score[0, offset_x])
+    print('Test accuracy:', score[1, offset_x])
         
 np.savez(opj(cwd, 'perclearn/data/results/translate'), score)  
 
@@ -136,10 +136,10 @@ for i, angle in enumerate(range(0,360,10)):
     x_test = x_test.astype('float32')
     x_test /= 255
     print(x_test.shape[0], 'test samples')
-    print('offset x: ', offset_x)    
+    print('angle: ', angle)    
     
     score[:,i] = np.array(model.evaluate(x_test, y_test, verbose=0))
-    print('Test loss:', score[0])
-    print('Test accuracy:', score[1])
+    print('Test loss:', score[0, i])
+    print('Test accuracy:', score[1, i])
         
 np.savez(opj(cwd, 'perclearn/data/results/rotate'), score) 
