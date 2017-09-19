@@ -18,8 +18,19 @@ import numpy as np
 import os
 from os.path import join as opj
 
-from perclearn import mnist_reader
+from perclearn import mnist_reader, 
+from __future__ import print_function
+import keras
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten
+from keras.layers import Conv2D, MaxPooling2D
+from keras import backend as K
+import numpy as np
+import os
+from os.path import join as opj
 
+from perclearn import mnist_reader
+from perclearn.utils import create_new_dataset
 
 cwd = os.getcwd()
 
@@ -33,7 +44,7 @@ img_rows, img_cols = 56, 56
 # the data, shuffled and split between train and test sets
 _, y_train_full = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
                                            kind='train')
-x_test, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+x_test_full , y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
                                          kind='t10k')
 
 # Loading of x_train and dividing in x_train and x_val
@@ -91,12 +102,15 @@ model.fit(x_train, y_train,
           validation_data=(x_val, y_val))
 
 
+"""
+TRANSLATION
+"""
 
-
+score = np.empty((2,56))
 # iterate over creation of different x_tests and evaluate model
 for offset_x in range(56):
-        
-    x_test, _ = create_new_dataset(x_test, [[offset_x,0]])        
+            
+    x_test, _ = create_new_dataset(x_test_full, [[offset_x,0]])        
     
     if K.image_data_format() == 'channels_first':
         x_test = x_test.reshape(x_test.shape[0], 1, img_rows, img_cols)
@@ -108,11 +122,34 @@ for offset_x in range(56):
     print(x_test.shape[0], 'test samples')
     print('offset x: ', offset_x)    
     
-    score = model.evaluate(x_test, y_test, verbose=0)
+    score[:,offset_x] = np.array(model.evaluate(x_test, y_test, verbose=0))
     print('Test loss:', score[0])
     print('Test accuracy:', score[1])
+        
+np.savez(opj(cwd, 'perclearn/data/experiments/translate'), score)  
+
+"""
+ROTATION
+"""
+score = np.empty((2,36))
+# iterate over creation of different x_tests and evaluate model
+for i, angle in enumerate(range(0,360,10)):
+            
+    x_test, _ = create_new_dataset(x_test_full, [[0,0]],
+                                   rotate_bool=True, angle=angle)      
     
-    ### SAVE!!
-
-np.savez(opj(cwd, 'perclearn/data/experiments/2'), score)  
-
+    if K.image_data_format() == 'channels_first':
+        x_test = x_test.reshape(x_test.shape[0], 1, img_rows, img_cols)
+    else:
+        x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
+    
+    x_test = x_test.astype('float32')
+    x_test /= 255
+    print(x_test.shape[0], 'test samples')
+    print('offset x: ', offset_x)    
+    
+    score[:,i] = np.array(model.evaluate(x_test, y_test, verbose=0))
+    print('Test loss:', score[0])
+    print('Test accuracy:', score[1])
+        
+np.savez(opj(cwd, 'perclearn/data/experiments/rotate'), score) 
