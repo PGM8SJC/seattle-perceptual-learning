@@ -20,17 +20,6 @@ import os
 from os.path import join as opj
 
 from perclearn import mnist_reader
-from __future__ import print_function
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
-from keras import backend as K
-import numpy as np
-import os
-from os.path import join as opj
-
-from perclearn import mnist_reader
 from perclearn.utils import create_new_dataset
 
 cwd = os.getcwd()
