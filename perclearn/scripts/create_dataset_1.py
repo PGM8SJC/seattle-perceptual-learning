@@ -17,6 +17,8 @@ X_test, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
 X_train, X_train_info = create_new_dataset(X_train, [[0,0]])        
 np.savez(opj(cwd, 'perclearn/data/experiments/1/training'), X_train)
 
+
+### We need to iterate over this and the model:
 X_test = create_new_dataset(X_test, [[0,28],[28,0],[28,28]])        
 np.savez(opj(cwd, 'perclearn/data/experiments/1/testing'),X_test)  
         
