@@ -138,8 +138,10 @@ x_train_full, y_train_full = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fa
 offsets = [[x,y] for x in range(28) for y in range(28)]
 
 # Generating of x_train and dividing in x_train and x_val
-x, _ = create_new_dataset(x_train_full[:10,:], offsets=offsets,
+x, _ = create_new_dataset(x_train_full[0:2,:], offsets=offsets,
                                          rotate_bool=True)  
+plt.imshow(np.reshape(x[0,:], (56,56)))
+
 
 for i in range(10):
     plt.figure()

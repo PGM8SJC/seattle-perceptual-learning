@@ -124,8 +124,9 @@ def create_composition(input_image, background_image,
     out_mask_full = out_mask.copy()
     out_mask_full[out_mask<=radius] = radius
     
+    # TODO: Move scale range to external parameter
     dist_from_center_rescaled = scale_2D(out_mask_full.data,
-                                         scale_range=(0, 1))
+                                         scale_range=(1, 1))
 
     background_offset = background_image[y_offset:y_offset+w, x_offset:x_offset+h]
 
