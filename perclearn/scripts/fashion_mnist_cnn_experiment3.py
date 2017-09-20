@@ -42,7 +42,7 @@ x_test_full, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion')
 offsets = [[x,y] for x in range(28) for y in range(28)]
 
 # Generating of x_train and dividing in x_train and x_val
-x_train_full = create_new_dataset(x_train_full, offsets=offsets,
+x_train_full, _ = create_new_dataset(x_train_full, offsets=offsets,
                                          rotate_bool=True)      
 
 x_train = x_train_full[:50000]
@@ -120,7 +120,7 @@ for offset_x in range(28):
     print('Test loss:', score[0, offset_x])
     print('Test accuracy:', score[1, offset_x])
         
-np.savez(opj(cwd, 'perclearn/data/results/translate'), score)  
+np.savez(opj(cwd, 'perclearn/data/results/translate_exp3'), score)  
 
 """
 ROTATION
@@ -146,4 +146,4 @@ for i, angle in enumerate(range(0,360,10)):
     print('Test loss:', score[0, i])
     print('Test accuracy:', score[1, i])
         
-np.savez(opj(cwd, 'perclearn/data/results/rotate'), score) 
+np.savez(opj(cwd, 'perclearn/data/results/rotate_exp3'), score) 
