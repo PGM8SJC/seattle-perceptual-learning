@@ -7,16 +7,16 @@ Trains a simple convnet on the Fashion MNIST dataset modified:
     Testing moving test sets 1 pixel to the right each time
     or rotation 10º.
     
-    This, 10x.
+    10x with VGG16
 
 Gets to % test accuracy after 12 epochs
 '''
 
 from __future__ import print_function
 import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
+from keras.models import Model
+from keras.layers import (Input, Dense, Dropout, Flatten, 
+                          Conv2D, MaxPooling2D)
 from keras import backend as K
 import numpy as np
 import os
@@ -78,28 +78,48 @@ for exp_time in range(10):
     y_val = keras.utils.to_categorical(y_val, num_classes)
     y_test = keras.utils.to_categorical(y_test, num_classes)
     
-    model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3),
-                     activation='relu',
-                     input_shape=input_shape))
-    model.add(Conv2D(64, (3, 3), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-    model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(num_classes, activation='softmax'))
+    ## VGG16 Model
     
-    model.compile(loss=keras.losses.categorical_crossentropy,
-                  optimizer=keras.optimizers.Adadelta(),
-                  metrics=['accuracy'])
+    input_tensor = Input(input_shape)
+    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1')(input_tensor)
+    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
+
+    # Block 2
+    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1')(x)
+    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
+
+    # Block 3
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2')(x)
+    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
+
+    # Block 4
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2')(x)
+    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3')(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
+
+    # Classification block
+    x = Flatten(name='flatten')(x)
+    x = Dense(4096, activation='relu', name='fc1')(x)
+    x = Dense(4096, activation='relu', name='fc2')(x)
+    x = Dropout(0.5)(x)
+    x = Dense(10, activation='softmax', name='predictions')(x)
+    model = Model(inputs=[input_tensor],outputs=[x])
+    
+    model.compile(optimizer='adam',
+                  loss='sparse_categorical_crossentropy',
+                  metrics=['acc'])
     
     model.fit(x_train, y_train,
+              validation_data=(x_val, y_val),
               batch_size=batch_size,
               epochs=epochs,
-              verbose=1,
-              validation_data=(x_val, y_val))
-    
+              verbose=1)    
+
     
     """
     TRANSLATION
@@ -145,7 +165,7 @@ for exp_time in range(10):
         
         score_rotate_10x[exp_time,:,offset_x] = np.array(model.evaluate(x_test, y_test, verbose=0))
         
-np.savez(opj(cwd, 'perclearn/data/results/translate_10x_2cv'), score_translate_10x)  
-np.savez(opj(cwd, 'perclearn/data/results/rotate_10x_2cv'), score_rotate_10x) 
+np.savez(opj(cwd, 'perclearn/data/results/translate_10x_vgg16'), score_translate_10x)  
+np.savez(opj(cwd, 'perclearn/data/results/rotate_10x_vgg16'), score_rotate_10x) 
 
 
