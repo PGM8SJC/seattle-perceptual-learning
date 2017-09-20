@@ -15,6 +15,8 @@ Gets to % test accuracy after 12 epochs
 from __future__ import print_function
 import keras
 from keras.models import Model
+from keras.applications import VGG16
+
 from keras.layers import (Input, Dense, Dropout, Flatten, 
                           Conv2D, MaxPooling2D)
 from keras import backend as K
@@ -79,48 +81,21 @@ for exp_time in range(10):
     y_test = keras.utils.to_categorical(y_test, num_classes)
     
     ## VGG16 Model
+    model = VGG16(weights=None,
+                  input_shape=input_shape,
+                  pooling=max,
+                  classes=num_classes)
     
-    input_tensor = Input(input_shape)
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1')(input_tensor)
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
-
-    # Block 2
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1')(x)
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
-
-    # Block 3
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1')(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2')(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
-
-    # Block 4
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1')(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2')(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3')(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
-
-    # Classification block
-    x = Flatten(name='flatten')(x)
-    x = Dense(4096, activation='relu', name='fc1')(x)
-    x = Dense(4096, activation='relu', name='fc2')(x)
-    x = Dropout(0.5)(x)
-    x = Dense(10, activation='softmax', name='predictions')(x)
-    model = Model(inputs=[input_tensor],outputs=[x])
-    
-    model.compile(optimizer='adam',
-                  loss='sparse_categorical_crossentropy',
-                  metrics=['acc'])
+    model.compile(loss=keras.losses.categorical_crossentropy,
+                  optimizer=keras.optimizers.Adam(),
+                  metrics=['accuracy'])
     
     model.fit(x_train, y_train,
               validation_data=(x_val, y_val),
               batch_size=batch_size,
               epochs=epochs,
-              verbose=1)    
+              verbose=1) 
 
-    
     """
     TRANSLATION
     """
