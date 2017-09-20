@@ -118,3 +118,32 @@ np.savez(opj(cwd, 'perclearn/data/experiments/1/training'), X_train)
 X_test = create_new_dataset(X_test, [[0,28],[28,0],[28,28]])        
 np.savez(opj(cwd, 'perclearn/data/experiments/1/testing'),X_test)  
         
+"""
+"""
+import os
+from os.path import join as opj
+import numpy as np
+import matplotlib.pyplot as plt
+
+from perclearn import mnist_reader
+from perclearn.utils import (create_new_dataset)
+
+cwd = os.getcwd()
+
+# the data, shuffled and split between train and test sets
+x_train_full, y_train_full = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
+                                           kind='train')
+
+
+offsets = [[x,y] for x in range(28) for y in range(28)]
+
+# Generating of x_train and dividing in x_train and x_val
+x, _ = create_new_dataset(x_train_full[:10,:], offsets=offsets,
+                                         rotate_bool=True)  
+
+for i in range(10):
+    plt.figure()
+    plt.imshow(np.reshape(x[i,:], (56,56)))
+
+
+
