@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 '''
 Trains a simple convnet on the Fashion MNIST dataset modified:
     
@@ -138,7 +137,7 @@ for exp_time in range(10):
         print(x_test.shape[0], 'test samples')
         print('angle: ', angle)    
         
-        score_rotate_10x[exp_time,:,offset_x] = np.array(model.evaluate(x_test, y_test, verbose=0))
+        score_rotate_10x[exp_time,:,i] = np.array(model.evaluate(x_test, y_test, verbose=0))
         
 np.savez(opj(cwd, 'perclearn/data/results/translate_10x_vgg16'), score_translate_10x)  
 np.savez(opj(cwd, 'perclearn/data/results/rotate_10x_vgg16'), score_rotate_10x) 
