@@ -108,7 +108,7 @@ for offset_x in range(28):
     print('Test loss:', score[0, offset_x])
     print('Test accuracy:', score[1, offset_x])
         
-np.savez(opj(cwd, 'perclearn/data/results/translate'), score)  
+np.savez(opj(cwd, 'perclearn/data/results/translate_exp2_vgg16'), score)  
 
 """
 ROTATION
@@ -134,4 +134,4 @@ for i, angle in enumerate(range(0,360,10)):
     print('Test loss:', score[0, i])
     print('Test accuracy:', score[1, i])
         
-np.savez(opj(cwd, 'perclearn/data/results/rotate'), score) 
+np.savez(opj(cwd, 'perclearn/data/results/rotate_exp2_vgg16'), score) 
