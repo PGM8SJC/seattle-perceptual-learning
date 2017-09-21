@@ -13,11 +13,8 @@ Gets to % test accuracy after 12 epochs
 
 from __future__ import print_function
 import keras
-from keras.models import Model
 from keras.applications import VGG16
 
-from keras.layers import (Input, Dense, Dropout, Flatten, 
-                          Conv2D, MaxPooling2D)
 from keras import backend as K
 import numpy as np
 import os
