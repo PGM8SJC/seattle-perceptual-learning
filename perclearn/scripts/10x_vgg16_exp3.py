@@ -40,6 +40,7 @@ x_train_full, y_train_full = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fa
                                            kind='train')
 x_test_full, y_test = mnist_reader.load_mnist(opj(cwd, 'perclearn/data/fashion'),
                                          kind='t10k')
+y_test = keras.utils.to_categorical(y_test, num_classes)
 
 offsets = [[x,y] for x in range(28) for y in range(28)]
 
@@ -77,7 +78,6 @@ for exp_time in range(10):
     # convert class vectors to binary class matrices
     y_train = keras.utils.to_categorical(y_train, num_classes)
     y_val = keras.utils.to_categorical(y_val, num_classes)
-    y_test = keras.utils.to_categorical(y_test, num_classes)
     
     ## VGG16 Model
     model = VGG16(weights=None,
