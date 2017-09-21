@@ -48,11 +48,11 @@ score_rotate_10x = np.empty((10,2,36))
 
 for exp_time in range(10):
     # Generating of x_train and dividing in x_train and x_val
-    x_train_full, _ = create_new_dataset(x_train_full, offsets=offsets,
+    x_tr, _ = create_new_dataset(x_train_full, offsets=offsets,
                                              rotate_bool=True)      
     
-    x_train = x_train_full[:50000]
-    x_val = x_train_full[50000:]
+    x_train = x_tr[:50000]
+    x_val = x_tr[50000:]
     
     y_train = y_train_full[:50000]
     y_val = y_train_full[50000:]
