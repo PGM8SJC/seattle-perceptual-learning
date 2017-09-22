@@ -29,8 +29,8 @@ plots
 # TRANSLATE
 sns.tsplot(translate_10x_2cv_rand[:,1,:])
 plt.plot(translate_2cv_fixed[1,:])
-sns.tsplot(translate_10x_vgg16_rand[:,1,:])
-plt.plot(translate_vgg16_fixed[1,:])
+#sns.tsplot(translate_10x_vgg16_rand[:,1,:])
+#plt.plot(translate_vgg16_fixed[1,:])
 plt.legend(['Fixed 2cv', 'Random 10x_2cv',
             'Fixed vgg16', 'Random 10x_vgg16'])
 plt.title('TRANSLATION')
@@ -48,8 +48,8 @@ x = np.linspace(0, 360, 36)
 
 sns.tsplot(rotate_10x_2cv_rand[:,1,:], time=x)
 plt.plot(x, rotate_2cv_fixed[1,:])
-sns.tsplot(translate_10x_vgg16_rand[:,1,:], time=x)
-plt.plot(translate_vgg16_fixed[1,:])
+#sns.tsplot(translate_10x_vgg16_rand[:,1,:], time=x)
+#plt.plot(translate_vgg16_fixed[1,:])
 plt.legend(['Fixed 2cv', 'Random 10x_2cv',
             'Fixed vgg16', 'Random 10x_vgg16'])
 plt.title('ROTATION')
